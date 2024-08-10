@@ -9,22 +9,32 @@ Data Analysis: Perform in-depth analysis of conflict data, including event types
 
 ## Predictive Modeling:
 Random Forest Model: Classifies regions based on conflict data using a robust ensemble method.
+
 LSTM Model: Predicts conflict outcomes by analyzing sequences and temporal patterns in the data.
+
 LLM-Powered Strategy Generation: Generate detailed and tailored conflict mitigation strategies using an LLM based on the model's predictions.
+
 User-Friendly Interface: Interact with the data and models through a streamlined Streamlit application.
+
 Customizable Models: Adjust model parameters to refine predictions and strategies.
 
 ## Project Structure
 .
 ├── data/                   # Directory to store datasets
+
 ├── notebooks/              # Jupyter notebooks for data analysis and model development
+
 ├── streamlit_app/          # Streamlit app code and configurations
+
 ├── models/                 # Trained models and scripts for training
+
 ├── requirements.txt        # Python dependencies
+
 ├── README.md               # Project documentation
+
 └── LICENSE                 # License information
 
-## Usage ( Streamlit web app Implementation 
+## Usage ( Streamlit web app Implementation )
 Upload Conflict Data
 Upload your conflict data CSV file via the sidebar in the Streamlit app. The data should contain columns for regions, event types, and fatalities.
 
