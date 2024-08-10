@@ -16,6 +16,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report
 import google.generativeai as genai
 
+
 # Set page configuration
 st.set_page_config(
     page_title="Conflict Data Analysis and Mitigation",
@@ -106,16 +107,26 @@ def conflict_mitigation_prompt(conflict_type, region):
     """
 
 def generate_conflict_mitigation_strategy(api_key, conflict_type, region):
+    # Configure the API key
     genai.configure(api_key=api_key)
-    model = genai.Model(name='gemini-1.5-flash')
+    
+    # Define the prompt text
     prompt_text = conflict_mitigation_prompt(conflict_type, region)
-    response = model.generate(
+    
+    # Generate the response
+    response = genai.generate_text(
         prompt=prompt_text,
-        max_tokens=800,
+        model='gemini-1.5-flash',  # Specify the model name here
+        max_output_tokens=800,
         temperature=0.3,
         top_p=1
     )
-    return response.choices[0].text
+    
+    # Extract the generated text from the response
+    if response and 'candidates' in response and len(response['candidates']) > 0:
+        return response['candidates'][0]['output']
+    else:
+        return "No strategy generated. Please check your input or API key."
 
 # Streamlit app layout
 st.title('Conflict Data Analysis and Mitigation Strategies')
