@@ -110,10 +110,10 @@ def generate_conflict_mitigation_strategy(api_key, conflict_type, region):
     try:
         # Configure the API key
         genai.configure(api_key=api_key)
-
+        
         # Define the prompt text
         prompt_text = conflict_mitigation_prompt(conflict_type, region)
-
+        
         # Generate the response
         response = genai.generate_text(
             prompt=prompt_text,
@@ -122,7 +122,7 @@ def generate_conflict_mitigation_strategy(api_key, conflict_type, region):
             temperature=0.3,
             top_p=1
         )
-
+        
         # Extract the generated text from the response
         if response and 'candidates' in response and len(response['candidates']) > 0:
             return response['candidates'][0]['output']
@@ -174,52 +174,52 @@ if uploaded_file is not None:
             rf_model, X_test_scaled, y_test, predictions = train_rf_model(X, y, n_estimators, max_depth)
 
             if rf_model:
-                # Model Evaluation
-                st.subheader('Model Evaluation')
-                class_labels = ["Africa", "Asia", "Middle East", "Latin America", "Europe", "USA/Canada"]
-                st.text(classification_report(y_test, predictions, target_names=class_labels))
+                # Collapsible Model Evaluation
+                with st.expander('Model Evaluation'):
+                    class_labels = ["Africa", "Asia", "Middle East", "Latin America", "Europe", "USA/Canada"]
+                    st.text(classification_report(y_test, predictions, target_names=class_labels))
 
-                # Feature Importance
-                st.subheader('Feature Importance')
-                plot_feature_importance(rf_model, X)
+                # Collapsible Feature Importance
+                with st.expander('Feature Importance'):
+                    plot_feature_importance(rf_model, X)
 
-                # Conflict Mitigation Strategy
-                st.subheader('Conflict Mitigation Strategy')
-                selected_region = st.selectbox('Select Region:', class_labels)
-                generate_button = st.button('Generate Mitigation Strategy')
-                if generate_button:
-                    if api_key:
-                        predicted_conflict_type = event_encoder.inverse_transform([np.argmax(np.bincount(y_test[predictions == region_encoder.transform([selected_region])[0]]))])[0]
+                # Collapsible Conflict Mitigation Strategy
+                with st.expander('Conflict Mitigation Strategy'):
+                    selected_region = st.selectbox('Select Region:', class_labels)
+                    generate_button = st.button('Generate Mitigation Strategy')
+                    if generate_button:
+                        if api_key:
+                            predicted_conflict_type = event_encoder.inverse_transform([np.argmax(np.bincount(y_test[predictions == region_encoder.transform([selected_region])[0]]))])[0]
+                            
+                            # First, try the Generative AI strategy
+                            strategy = generate_conflict_mitigation_strategy(api_key, predicted_conflict_type, selected_region)
+                            
+                            # If the Generative AI fails, use the rule-based fallback
+                            if "No strategy generated" in strategy:
+                                strategy = generate_rule_based_strategy(predicted_conflict_type, selected_region)
 
-                        # First, try the Generative AI strategy
-                        strategy = generate_conflict_mitigation_strategy(api_key, predicted_conflict_type, selected_region)
+                            st.text_area('Generated Strategy:', value=strategy, height=300)
+                        else:
+                            st.error("Please enter your API key.")
 
-                        # If the Generative AI fails, use the rule-based fallback
-                        if "No strategy generated" in strategy:
-                            strategy = generate_rule_based_strategy(predicted_conflict_type, selected_region)
+                # Collapsible Processed Data
+                with st.expander('Processed Data'):
+                    st.write(processed_df)
 
-                        st.text_area('Generated Strategy:', value=strategy, height=300)
-                    else:
-                        st.error("Please enter your API key.")
+                    # Download link for the processed data
+                    @st.cache_data
+                    def convert_df(df):
+                        return df.to_csv(index=False).encode('utf-8')
 
-                # Display processed data
-                st.subheader('Processed Data')
-                st.write(processed_df)
+                    csv = convert_df(processed_df)
 
-                # Download link for the processed data
-                @st.cache_data
-                def convert_df(df):
-                    return df.to_csv(index=False).encode('utf-8')
-
-                csv = convert_df(processed_df)
-
-                st.download_button(
-                    label="Download Processed Data as CSV",
-                    data=csv,
-                    file_name='processed_data.csv',
-                    mime='text/csv',
-                )
+                    st.download_button(
+                        label="Download Processed Data as CSV",
+                        data=csv,
+                        file_name='processed_data.csv',
+                        mime='text/csv',
+                    )
             else:
                 st.error("Model training failed. Please check the data and try again.")
 else:
-    st.sidebar.warning("Please upload a CSV file.")
+    st.sidebar.warning("Please upload a CSV file to get started.")
