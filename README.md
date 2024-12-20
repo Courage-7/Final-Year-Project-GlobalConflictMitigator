@@ -19,14 +19,13 @@ User-Friendly Interface: Interact with the data and models through a streamlined
 Customizable Models: Adjust model parameters to refine predictions and strategies.
 
 ## Project Structure
-.
 ├── ACLED data/              # Directory to store datasets
 
-├── notebooks/              # Jupyter notebooks for data analysis and model development
+├── EDA with PandasAI/       # Jupyter notebooks for data analysis using Pandasai.
 
 ├── streamlit_app/          # Streamlit app code and configurations
 
-├── models/                 # Trained models and scripts for training
+├── models/                 # Trained models and scripts for training, Randomforest and Auto ARIMA.
 
 ├── requirements.txt        # Python dependencies
 
