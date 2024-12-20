@@ -1,6 +1,6 @@
 # GeopoliticalConflictMitigator
 ## Overview
-Geopolitical Conflict Analysis and Mitigator is a comprehensive tool designed to analyze conflict data and generate actionable mitigation strategies. The application leverages machine learning models, including a Random Forest and Auto ARIMA model, alongside a Large Language Model (LLM) to provide insights and strategies for resolving conflicts across different regions of the world.
+Geopolitical Conflict Analysis Mitigator is a comprehensive tool designed to analyze conflict data and generate actionable mitigation strategies. The application leverages machine learning models, including a Random Forest and Auto ARIMA model, alongside a Large Language Model (LLM) to provide insights and strategies for resolving conflicts across different regions of the world.
 
 This project was developed as part of my final year project, focusing on the intersection of data science, machine learning, and AI-driven decision-making in the context of global conflict resolution.
 
